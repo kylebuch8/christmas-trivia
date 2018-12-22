@@ -22,19 +22,33 @@ const boundChristmasTriviaTemplate = triviaQuestions => {
 };
 
 class ChristmasTrivia extends HTMLElement {
+  get questionsUrl() {
+    return this.getAttribute("questions-url");
+  }
+
   constructor() {
     super();
 
     this.attachShadow({ mode: "open" });
     this._dataHandler = this._dataHandler.bind(this);
+  }
 
-    fetch("questions.json")
+  connectedCallback() {
+    fetch(this.questionsUrl)
       .then(res => res.json())
       .then(this._dataHandler);
   }
 
   _dataHandler(data) {
-    const template = boundChristmasTriviaTemplate(data);
+    let questions = data.feed.entry;
+    questions = questions.map(_question => {
+      return {
+        question: _question.gsx$question.$t,
+        answer: _question.gsx$answer.$t
+      };
+    });
+
+    const template = boundChristmasTriviaTemplate(questions);
     this.shadowRoot.appendChild(template.content.cloneNode(true));
   }
 }
