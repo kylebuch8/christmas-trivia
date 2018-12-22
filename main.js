@@ -4,6 +4,7 @@ const boundChristmasTriviaTemplate = triviaQuestions => {
     <style>
       :host {
         display: block;
+        height: 100%;
       }
     </style>
     ${triviaQuestions
@@ -46,6 +47,7 @@ const boundTriviaQuestion = data => {
     <style>
       :host {
         display: block;
+        height: 100%;
       }
     </style>
     <h1>Question: ${data.question}</h1>
