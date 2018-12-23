@@ -21,10 +21,15 @@ const boundTriviaQuestion = data => {
 
       h1 {
         margin-top: 0;
+        font-size: 2rem;
+        font-weight: 400;
       }
 
       #answer {
-        visibility: hidden;
+        visibility: visible;
+        font-size: 2rem;
+        padding: 20px 40px;
+        background-color: rgba(0,0,0,.25);
       }
 
       #answer.show {

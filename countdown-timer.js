@@ -4,8 +4,8 @@ const boundTemplate = config => {
     <style>
       :host {
         display: flex;
-        width: 80px;
-        height: 80px;
+        width: 88px;
+        height: 88px;
         align-items: center;
         justify-content: center;
       }
@@ -14,16 +14,16 @@ const boundTemplate = config => {
         position: absolute;
         top: 0;
         right: 0;
-        width: 80px;
-        height: 80px;
+        width: 88px;
+        height: 88px;
         transform: rotateY(-180deg) rotateZ(-90deg);
       }
 
       svg circle {
         stroke-dasharray: 240px;
         stroke-dashoffset: 0px;
-        stroke-width: 2px;
-        stroke: white;
+        stroke-width: 6px;
+        stroke: rgba(0,0,0,.5);
         fill: none;
       }
 
@@ -33,6 +33,12 @@ const boundTemplate = config => {
 
       .hide {
         display: none;
+      }
+
+      #countdown {
+        font-family: 'Copse', serif;
+        font-size: 1.25rem;
+        color: white;
       }
 
       @keyframes countdown {
@@ -46,7 +52,7 @@ const boundTemplate = config => {
     </style>
     <div id="countdown"></div>
     <svg>
-      <circle r="38" cx="40" cy="40"></circle>
+      <circle r="38" cx="44" cy="44"></circle>
     </svg>
   `;
 
