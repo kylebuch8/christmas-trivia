@@ -29,7 +29,7 @@ const boundTriviaQuestion = data => {
         visibility: visible;
         font-size: 2rem;
         padding: 20px 40px;
-        background-color: rgba(0,0,0,.25);
+        background-color: rgba(0,0,0,.5);
       }
 
       #answer.show {
