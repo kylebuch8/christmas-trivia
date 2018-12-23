@@ -12,7 +12,6 @@ const boundTriviaQuestion = data => {
         display: block;
         height: 100%;
         background-color: red;
-        background-image: url()
       }
 
       h1 {
