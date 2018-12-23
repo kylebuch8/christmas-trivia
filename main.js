@@ -68,7 +68,7 @@ class ChristmasTrivia extends HTMLElement {
     this._dataHandler = this._dataHandler.bind(this);
     this._startQuestion = this._startQuestion.bind(this);
     this._showAnswer = this._showAnswer.bind(this);
-    this.questionDuration = 15000;
+    this.questionDuration = 5000;
     this.answerDuration = this.questionDuration / 2;
   }
 
@@ -79,7 +79,7 @@ class ChristmasTrivia extends HTMLElement {
   }
 
   _dataHandler(data) {
-    let questions = data.feed.entry.slice(0, 2);
+    let questions = data.feed.entry;
     questions = questions.map(_question => {
       return {
         question: _question.gsx$question.$t,

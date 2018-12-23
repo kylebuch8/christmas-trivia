@@ -27,20 +27,32 @@ const boundTriviaQuestion = data => {
         font-weight: 400;
       }
 
+      #container {
+        height: 100px;
+      }
+
       #answer {
-        visibility: visible;
+        /* visibility: visible; */
+        display: none;
         font-size: 2rem;
         padding: 20px 40px;
         background-color: rgba(0,0,0,.25);
       }
 
       #answer.show {
-        visibility: visible;
+        /* visibility: visible; */
+        display: block;
+      }
+
+      .hide {
+        display: none;
       }
     </style>
     <h1>${data.question}</h1>
-    <countdown-timer seconds="15"></countdown-timer>
-    <p id="answer">${data.answer}</p>
+    <div id="container">
+      <countdown-timer seconds="5"></countdown-timer>
+      <div id="answer">${data.answer}</div>
+    </div>
   `;
 
   return triviaQuestionTemplate;
@@ -87,10 +99,12 @@ class TriviaQuestion extends HTMLElement {
 
   showAnswer() {
     this.shadowRoot.querySelector("#answer").classList.add("show");
+    this.shadowRoot.querySelector("countdown-timer").classList.add("hide");
   }
 
   reset() {
     this.shadowRoot.querySelector("#answer").classList.remove("show");
+    this.shadowRoot.querySelector("countdown-timer").classList.remove("hide");
   }
 }
 
