@@ -8,6 +8,7 @@ const boundTemplate = config => {
         height: 88px;
         align-items: center;
         justify-content: center;
+        position: relative;
       }
 
       svg {
@@ -87,13 +88,16 @@ class CountdownTimer extends HTMLElement {
   }
 
   start() {
-    this.loop = 0;
-    this.countdown = this.seconds;
+    this.reset();
 
     this.shadowRoot.querySelector("svg").classList.add("animate");
-    this.shadowRoot.querySelector("svg").classList.remove("hide");
-
     this.interval = setInterval(this._intervalHandler, 1000);
+  }
+
+  reset() {
+    this.loop = 0;
+    this.countdown = this.seconds;
+    this.shadowRoot.querySelector("svg").classList.remove("hide");
   }
 
   _intervalHandler() {

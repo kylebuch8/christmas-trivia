@@ -1,5 +1,4 @@
 import "./trivia-question.js";
-import "./countdown-timer.js";
 
 const colors = ["red", "purple", "green"];
 
@@ -10,12 +9,6 @@ const boundChristmasTriviaTemplate = triviaQuestions => {
       :host {
         display: block;
         height: 100%;
-      }
-
-      countdown-timer {
-        position: fixed;
-        right: 0;
-        bottom: 0;
       }
 
       trivia-question {
@@ -45,7 +38,6 @@ const boundChristmasTriviaTemplate = triviaQuestions => {
     `
       )
       .join("")}
-    <countdown-timer seconds="4"></countdown-timer>
   `;
 
   return christmasTriviaTemplate;
@@ -76,7 +68,7 @@ class ChristmasTrivia extends HTMLElement {
     this._dataHandler = this._dataHandler.bind(this);
     this._startQuestion = this._startQuestion.bind(this);
     this._showAnswer = this._showAnswer.bind(this);
-    this.questionDuration = 4000;
+    this.questionDuration = 15000;
     this.answerDuration = this.questionDuration / 2;
   }
 
@@ -87,7 +79,7 @@ class ChristmasTrivia extends HTMLElement {
   }
 
   _dataHandler(data) {
-    let questions = data.feed.entry;
+    let questions = data.feed.entry.slice(0, 2);
     questions = questions.map(_question => {
       return {
         question: _question.gsx$question.$t,
@@ -102,8 +94,6 @@ class ChristmasTrivia extends HTMLElement {
   }
 
   _startQuestion() {
-    this.shadowRoot.querySelector("countdown-timer").start();
-
     setTimeout(() => {
       this._showAnswer();
     }, this.questionDuration);
@@ -120,7 +110,13 @@ class ChristmasTrivia extends HTMLElement {
     if (!this.activeQuestion) {
       this.activeQuestion = this.shadowRoot.querySelector("trivia-question").id;
     } else {
-      this.activeQuestion = this.activeQuestion.nextElementSibling.id;
+      if (this.activeQuestion.nextElementSibling) {
+        this.activeQuestion = this.activeQuestion.nextElementSibling.id;
+      } else {
+        this.activeQuestion = this.shadowRoot.querySelector(
+          "trivia-question"
+        ).id;
+      }
     }
 
     this.activeQuestion.scrollIntoView({ behavior: "smooth" });
