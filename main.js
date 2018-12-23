@@ -1,3 +1,6 @@
+import "./trivia-question.js";
+import "./countdown-timer.js";
+
 const christmasTriviaTemplate = document.createElement("template");
 const boundChristmasTriviaTemplate = triviaQuestions => {
   christmasTriviaTemplate.innerHTML = `
@@ -6,16 +9,23 @@ const boundChristmasTriviaTemplate = triviaQuestions => {
         display: block;
         height: 100%;
       }
+
+      countdown-timer {
+        position: fixed;
+        right: 0;
+        bottom: 0;
+      }
     </style>
     ${triviaQuestions
       .map(
         triviaQuestion => `
-      <trivia-question question="${triviaQuestion.question}" answer="${
-          triviaQuestion.answer
-        }"></trivia-question>
+      <trivia-question id="${triviaQuestion.id}" question="${
+          triviaQuestion.question
+        }" answer="${triviaQuestion.answer}"></trivia-question>
     `
       )
       .join("")}
+    <countdown-timer seconds="4"></countdown-timer>
   `;
 
   return christmasTriviaTemplate;
@@ -26,11 +36,28 @@ class ChristmasTrivia extends HTMLElement {
     return this.getAttribute("questions-url");
   }
 
+  get activeQuestion() {
+    return this.shadowRoot.querySelector("trivia-question[active]");
+  }
+
+  set activeQuestion(id) {
+    if (this.activeQuestion) {
+      this.activeQuestion.reset();
+      this.activeQuestion.removeAttribute("active");
+    }
+
+    this.shadowRoot.querySelector(`#${id}`).setAttribute("active", "");
+  }
+
   constructor() {
     super();
 
     this.attachShadow({ mode: "open" });
     this._dataHandler = this._dataHandler.bind(this);
+    this._startQuestion = this._startQuestion.bind(this);
+    this._showAnswer = this._showAnswer.bind(this);
+    this.questionDuration = 4000;
+    this.answerDuration = this.questionDuration / 2;
   }
 
   connectedCallback() {
@@ -50,50 +77,34 @@ class ChristmasTrivia extends HTMLElement {
 
     const template = boundChristmasTriviaTemplate(questions);
     this.shadowRoot.appendChild(template.content.cloneNode(true));
+
+    this._advance();
+  }
+
+  _startQuestion() {
+    setTimeout(() => {
+      this._showAnswer();
+    }, this.questionDuration);
+  }
+
+  _showAnswer() {
+    this.activeQuestion.showAnswer();
+    setTimeout(() => {
+      this._advance();
+    }, this.answerDuration);
+  }
+
+  _advance() {
+    if (!this.activeQuestion) {
+      this.activeQuestion = this.shadowRoot.querySelector("trivia-question").id;
+    } else {
+      this.activeQuestion = this.activeQuestion.nextElementSibling.id;
+    }
+
+    this.activeQuestion.scrollIntoView({ behavior: "smooth" });
+
+    this._startQuestion();
   }
 }
 
 window.customElements.define("christmas-trivia", ChristmasTrivia);
-
-const triviaQuestionTemplate = document.createElement("template");
-const boundTriviaQuestion = data => {
-  triviaQuestionTemplate.innerHTML = `
-    <style>
-      :host {
-        display: block;
-        height: 100%;
-      }
-    </style>
-    <h1>Question: ${data.question}</h1>
-    <p>Answer: ${data.answer}</p>
-  `;
-
-  return triviaQuestionTemplate;
-};
-
-class TriviaQuestion extends HTMLElement {
-  get question() {
-    return this.getAttribute("question");
-  }
-
-  get answer() {
-    return this.getAttribute("answer");
-  }
-
-  constructor() {
-    super();
-
-    this.attachShadow({ mode: "open" });
-  }
-
-  connectedCallback() {
-    const template = boundTriviaQuestion({
-      question: this.question,
-      answer: this.answer
-    });
-
-    this.shadowRoot.appendChild(template.content.cloneNode(true));
-  }
-}
-
-window.customElements.define("trivia-question", TriviaQuestion);
