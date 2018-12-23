@@ -1,3 +1,5 @@
+import "./countdown-timer.js";
+
 function generateId() {
   return Math.random()
     .toString(36)
@@ -32,6 +34,7 @@ const boundTriviaQuestion = data => {
       }
     </style>
     <h1>${data.question}</h1>
+    <countdown-timer seconds="15"></countdown-timer>
     <p id="answer">${data.answer}</p>
   `;
 
@@ -45,6 +48,10 @@ class TriviaQuestion extends HTMLElement {
 
   get answer() {
     return this.getAttribute("answer");
+  }
+
+  static get observedAttributes() {
+    return ["active"];
   }
 
   constructor() {
@@ -62,6 +69,15 @@ class TriviaQuestion extends HTMLElement {
     });
 
     this.shadowRoot.appendChild(template.content.cloneNode(true));
+  }
+
+  attributeChangedCallback(attr, oldVal, newVal) {
+    if (attr === "active") {
+      if (newVal !== null) {
+        this.shadowRoot.querySelector("countdown-timer").reset();
+        this.shadowRoot.querySelector("countdown-timer").start();
+      }
+    }
   }
 
   showAnswer() {
