@@ -3,9 +3,11 @@ const boundTemplate = config => {
   countdownTimerTemplate.innerHTML = `
     <style>
       :host {
-        display: block;
+        display: flex;
         width: 80px;
         height: 80px;
+        align-items: center;
+        justify-content: center;
       }
 
       svg {
@@ -27,6 +29,10 @@ const boundTemplate = config => {
 
       svg.animate circle {
         animation: countdown ${config.seconds}s linear infinite forwards;
+      }
+
+      .hide {
+        display: none;
       }
 
       @keyframes countdown {
@@ -60,6 +66,8 @@ class CountdownTimer extends HTMLElement {
     super();
 
     this.attachShadow({ mode: "open" });
+    this.loop = 0;
+    this._intervalHandler = this._intervalHandler.bind(this);
   }
 
   connectedCallback() {
@@ -73,24 +81,26 @@ class CountdownTimer extends HTMLElement {
   }
 
   start() {
-    let loop = 0;
+    this.loop = 0;
+    this.countdown = this.seconds;
 
     this.shadowRoot.querySelector("svg").classList.add("animate");
+    this.shadowRoot.querySelector("svg").classList.remove("hide");
 
-    this.interval = setInterval(() => {
-      loop++;
-
-      this.countdown = this.seconds - loop;
-
-      if (loop === parseInt(this.seconds, 10)) {
-        loop = 0;
-      }
-    }, 1000);
+    this.interval = setInterval(this._intervalHandler, 1000);
   }
 
-  reset() {}
+  _intervalHandler() {
+    this.loop++;
 
-  pause() {}
+    this.countdown = this.seconds - this.loop;
+
+    if (this.loop === parseInt(this.seconds, 10)) {
+      clearInterval(this.interval);
+      this.shadowRoot.querySelector("svg").classList.remove("animate");
+      this.shadowRoot.querySelector("svg").classList.add("hide");
+    }
+  }
 }
 
 window.customElements.define("countdown-timer", CountdownTimer);

@@ -82,6 +82,8 @@ class ChristmasTrivia extends HTMLElement {
   }
 
   _startQuestion() {
+    this.shadowRoot.querySelector("countdown-timer").start();
+
     setTimeout(() => {
       this._showAnswer();
     }, this.questionDuration);
