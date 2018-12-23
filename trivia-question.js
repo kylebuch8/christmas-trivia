@@ -9,9 +9,14 @@ const boundTriviaQuestion = data => {
   triviaQuestionTemplate.innerHTML = `
     <style>
       :host {
-        display: block;
+        display: flex;
+        flex-direction: column;
         height: 100%;
-        background-color: red;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding-left: 25%;
+        padding-right: 25%;
       }
 
       h1 {
@@ -19,11 +24,11 @@ const boundTriviaQuestion = data => {
       }
 
       #answer {
-        display: none;
+        visibility: hidden;
       }
 
       #answer.show {
-        display: block;
+        visibility: visible;
       }
     </style>
     <h1>${data.question}</h1>

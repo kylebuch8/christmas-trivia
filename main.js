@@ -1,6 +1,8 @@
 import "./trivia-question.js";
 import "./countdown-timer.js";
 
+const colors = ["red", "purple", "green"];
+
 const christmasTriviaTemplate = document.createElement("template");
 const boundChristmasTriviaTemplate = triviaQuestions => {
   christmasTriviaTemplate.innerHTML = `
@@ -15,13 +17,31 @@ const boundChristmasTriviaTemplate = triviaQuestions => {
         right: 0;
         bottom: 0;
       }
+
+      trivia-question {
+        color: white;
+      }
+
+      trivia-question.red {
+        background-color: #b70129;
+      }
+
+      trivia-question.purple {
+        background-color: #847790;
+      }
+
+      trivia-question.green {
+        background-color: #3d6c6e;
+      }
     </style>
     ${triviaQuestions
       .map(
-        triviaQuestion => `
-      <trivia-question id="${triviaQuestion.id}" question="${
-          triviaQuestion.question
-        }" answer="${triviaQuestion.answer}"></trivia-question>
+        (triviaQuestion, index) => `
+      <trivia-question class="${colors[index % 3]}" id="${
+          triviaQuestion.id
+        }" question="${triviaQuestion.question}" answer="${
+          triviaQuestion.answer
+        }"></trivia-question>
     `
       )
       .join("")}
