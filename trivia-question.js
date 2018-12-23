@@ -36,7 +36,7 @@ const boundTriviaQuestion = data => {
         display: none;
         font-size: 2rem;
         padding: 20px 40px;
-        background-color: rgba(0,0,0,.25);
+        background-color: rgba(0,0,0,.5);
       }
 
       #answer.show {
