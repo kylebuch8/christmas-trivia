@@ -17,13 +17,13 @@ const boundTriviaQuestion = data => {
         align-items: center;
         justify-content: center;
         text-align: center;
-        padding-left: 25%;
-        padding-right: 25%;
+        padding-left: 12%;
+        padding-right: 12%;
       }
 
       h1 {
         margin-top: 0;
-        font-size: 2rem;
+        font-size: 3rem;
         font-weight: 400;
       }
 
@@ -32,16 +32,21 @@ const boundTriviaQuestion = data => {
       }
 
       #answer {
-        /* visibility: visible; */
-        display: none;
-        font-size: 2rem;
+        font-size: 3rem;
         padding: 20px 40px;
         background-color: rgba(0,0,0,.5);
+        opacity: 0;
+        width: 0;
+        height: 0;
+        overflow: hidden;
+        transition: opacity .6s;
+        transition-delay: 1s;
       }
 
       #answer.show {
-        /* visibility: visible; */
-        display: block;
+        width: auto;
+        height: auto;
+        opacity: 1;
       }
 
       .hide {
@@ -50,7 +55,7 @@ const boundTriviaQuestion = data => {
     </style>
     <h1>${data.question}</h1>
     <div id="container">
-      <countdown-timer seconds="5"></countdown-timer>
+      <countdown-timer seconds="30"></countdown-timer>
       <div id="answer">${data.answer}</div>
     </div>
   `;

@@ -1,7 +1,32 @@
 import "./trivia-question.js";
+import "./snow.js";
+
+/**
+ * Randomly shuffle an array
+ * https://stackoverflow.com/a/2450976/1293256
+ * @param  {Array} array The array to shuffle
+ * @return {String}      The first item in the shuffled array
+ */
+function shuffle(array) {
+  let currentIndex = array.length;
+  let temporaryValue, randomIndex;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
+}
 
 const colors = ["red", "purple", "green"];
-
 const christmasTriviaTemplate = document.createElement("template");
 const boundChristmasTriviaTemplate = triviaQuestions => {
   christmasTriviaTemplate.innerHTML = `
@@ -54,7 +79,12 @@ class ChristmasTrivia extends HTMLElement {
 
   set activeQuestion(id) {
     if (this.activeQuestion) {
-      this.activeQuestion.reset();
+      const oldActiveQuestion = this.activeQuestion;
+
+      setTimeout(() => {
+        oldActiveQuestion.reset();
+      }, 1000);
+
       this.activeQuestion.removeAttribute("active");
     }
 
@@ -68,8 +98,8 @@ class ChristmasTrivia extends HTMLElement {
     this._dataHandler = this._dataHandler.bind(this);
     this._startQuestion = this._startQuestion.bind(this);
     this._showAnswer = this._showAnswer.bind(this);
-    this.questionDuration = 5000;
-    this.answerDuration = this.questionDuration / 2;
+    this.questionDuration = 30000;
+    this.answerDuration = 20000;
   }
 
   connectedCallback() {
@@ -79,7 +109,7 @@ class ChristmasTrivia extends HTMLElement {
   }
 
   _dataHandler(data) {
-    let questions = data.feed.entry;
+    let questions = shuffle(data.feed.entry);
     questions = questions.map(_question => {
       return {
         question: _question.gsx$question.$t,
