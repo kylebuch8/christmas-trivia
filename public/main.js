@@ -109,11 +109,11 @@ class ChristmasTrivia extends HTMLElement {
   }
 
   _dataHandler(data) {
-    let questions = shuffle(data.feed.entry);
+    let questions = shuffle(data.values);
     questions = questions.map(_question => {
       return {
-        question: _question.gsx$question.$t,
-        answer: _question.gsx$answer.$t
+        question: _question[0],
+        answer: _question[1]
       };
     });
 
