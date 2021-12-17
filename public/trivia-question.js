@@ -23,7 +23,7 @@ const boundTriviaQuestion = data => {
 
       h1 {
         margin-top: 0;
-        font-size: 3rem;
+        font-size: 2rem;
         font-weight: 400;
       }
 
@@ -32,7 +32,7 @@ const boundTriviaQuestion = data => {
       }
 
       #answer {
-        font-size: 3rem;
+        font-size: 2rem;
         padding: 20px 40px;
         background-color: rgba(0,0,0,.5);
         opacity: 0;
@@ -51,6 +51,16 @@ const boundTriviaQuestion = data => {
 
       .hide {
         display: none;
+      }
+
+      @media (min-width: 768px) {
+        h1 {
+          font-size: 3rem;
+        }
+
+        #answer {
+          font-size: 3rem;
+        }
       }
     </style>
     <h1>${data.question}</h1>
