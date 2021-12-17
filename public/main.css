@@ -5,6 +5,7 @@ body {
   margin: 0;
   font-family: "Copse", serif;
   font-weight: normal;
+  overflow: hidden;
 }
 
 canvas {
