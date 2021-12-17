@@ -112,8 +112,8 @@ class ChristmasTrivia extends HTMLElement {
     let questions = shuffle(data.values);
     questions = questions.map(_question => {
       return {
-        question: _question[0],
-        answer: _question[1]
+        question: _question[0].replace(/\"/g, "&quot;"),
+        answer: _question[1].replace(/\"/g, "&quot;")
       };
     });
 
